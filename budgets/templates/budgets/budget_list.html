@@ -1,0 +1,32 @@
+{% extends 'budgets/index.html' %}
+
+{% block content %}
+    <h2 class="section-title">Budgets List</h2>
+    
+    <!-- Check if there are any budgets to display -->
+    {% if budgets %}
+        <ul class="budget-list">
+            {% for budget in budgets %}
+                <li class="budget-item">
+                    <div class="budget-details">
+                        <span class="budget-name"><strong>{{ budget.name }}</strong></span>
+                        <span class="budget-amount">Income: £{{ budget.income_amount }}</span>
+                    </div>
+                    <div class="budget-actions">
+                        <a href="{% url 'budgets:budget_info' budget.id %}" class="button small">View Details</a>
+                        <a href="{% url 'budgets:budget_edit' budget.id %}" class="button small">Edit</a>
+                        <a href="{% url 'budgets:budget_delete' budget.id %}" class="button small danger" onclick="return confirm('Are you sure you want to delete this budget?');">Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No budgets found.</p>
+    {% endif %}
+    
+    <!-- Link to create a new budget -->
+    <div class="action">
+        <a href="{% url 'budgets:budget_form' %}" class="button">Add A New Budget</a>
+    </div>
+
+{% endblock %}

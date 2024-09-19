@@ -1,0 +1,15 @@
+{% extends 'budgets/index.html' %}
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ERROR! Page Not Found</title>
+    <!-- Link to the static CSS file -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h2>Page Not Found</h2>
+    <p>The page you are looking has not been found. Please double check the URL or simply return to the <a href="{% url 'dashboard' %}">dashboard</a>.</p>
+</body>
+</html>

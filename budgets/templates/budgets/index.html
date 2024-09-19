@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Planner</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    {% if request.path != '/logout/' %}
+        <header>
+            <h1>Budget Planner</h1>
+            <nav>
+                <a href="{% url 'budgets:home' %}">Home</a>
+                <a href="{% url 'budgets:dashboard' %}">Dashboard</a>
+                <a href="{% url 'budgets:budgets_list' %}">Budgets</a>
+                <a href="{% url 'budgets:transactions_list' %}">Transactions</a>
+
+                <!-- Account Text and Dropdown -->
+                <div class="navbar-right">
+                    <div class="account-dropdown">
+                        <a href="#" class="account-link">Account</a>
+                        <div class="account-dropdown-content">
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'budgets:profile' %}">Profile</a>
+                                <a href="{% url 'budgets:settings' %}">Settings</a>
+                                <a href="{% url 'budgets:logout' %}">Logout</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Login</a>
+                                <a href="{% url 'budgets:register' %}">Register</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    {% endif %}
+
+    <div class="container">
+        <aside>
+            {% include 'budgets/sidebar.html' %}
+        </aside>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

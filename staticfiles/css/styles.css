@@ -1,0 +1,248 @@
+/* General Body Styling */
+body {
+    font-family: 'Roboto', sans-serif; /* Modern font */
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e; /* Dark background for a futuristic look */
+    color: #f4f4f9; /* Light text color for contrast */
+}
+
+/* Header Styling */
+header {
+    background: linear-gradient(135deg, #1e1e1e, #333); /* Gradient background */
+    padding: 20px;
+    color: #f4f4f9; /* Light text for contrast */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em; /* Larger font size for prominence */
+    font-weight: bold;
+    letter-spacing: 1px; /* Spacing for a modern touch */
+}
+
+/* Navigation Styling */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e1e1e, #333); /* Gradient background */
+    padding: 10px;
+    border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+}
+
+nav a {
+    color: #00bcd4; /* Neon blue for links */
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #333; /* Darker shade for buttons */
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+nav a:hover, nav a.active {
+    background-color: #444; /* Slightly lighter shade on hover */
+    color: #00bcd4; /* Neon blue for hover state */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Sidebar Styling */
+aside {
+    width: 250px;
+    background: linear-gradient(180deg, #2e2e2e, #1e1e1e); /* Dark grey gradient */
+    padding: 20px;
+    color: #f4f4f9; /* Light text for contrast */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for separation */
+    height: 100vh; /* Full height of the viewport */
+    box-sizing: border-box; /* Include padding and border in width and height */
+}
+
+aside h2 {
+    font-size: 1.5em;
+    margin-top: 0;
+    color: #00bcd4; /* Neon blue for headers */
+}
+
+aside ul {
+    padding: 0;
+}
+
+aside ul li {
+    margin-bottom: 10px;
+}
+
+aside ul li a {
+    color: #b3b3b3; /* Lighter link color */
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+aside ul li a:hover {
+    background-color: #333; /* Slightly darker background on hover */
+    color: #00bcd4; /* Neon blue for hover state */
+}
+
+/* Container Flexbox Layout */
+.container {
+    display: flex;
+}
+
+/* Main Content Styling */
+main {
+    flex: 1; /* Takes up remaining space */
+    padding: 20px;
+    background-color: #2e2e2e; /* Darker background for content */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #00bcd4; /* Neon blue for labels */
+}
+
+form input, form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #444; /* Dark border for inputs */
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding and border are included in total width */
+    width: 100%; /* Full width input */
+    background-color: #1e1e1e; /* Dark background for inputs */
+    color: #f4f4f9; /* Light text color */
+}
+
+form button {
+    background-color: #00bcd4; /* Neon blue for buttons */
+    color: #fff; /* White text */
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+form button:hover {
+    background-color: #0097a7; /* Slightly darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Link Styling */
+a {
+    color: #00bcd4; /* Neon blue */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* List Styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 8px 0;
+    border-bottom: 1px solid #444; /* Dark border for list items */
+}
+
+li:last-child {
+    border-bottom: none; /* Remove border for last item */
+}
+
+/* Error List Styling */
+.errorlist {
+    color: #dc3545; /* Bootstrap's red color for error messages */
+    border: 1px solid #dc3545;
+    padding: 15px;
+    border-radius: 4px;
+    background-color: #f8d7da;
+    margin-bottom: 15px;
+}
+
+.errorlist ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.errorlist li {
+    margin: 5px 0;
+}
+
+/* Account Dropdown */
+.account-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.account-link {
+    background-color: #333; /* Dark background for consistency */
+    color: #00bcd4; /* Neon blue text */
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.account-link:hover {
+    background-color: #444; /* Darker shade on hover */
+}
+
+/* Style the dropdown content */
+.account-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position below the account link */
+    right: 0;  /* Align to the right */
+    background-color: #2e2e2e; /* Darker background to match the site */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+}
+
+/* Style dropdown menu items */
+.account-dropdown-content a {
+    color: #f4f4f9; /* Light text color for contrast */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Change background color of items on hover */
+.account-dropdown-content a:hover {
+    background-color: #444; /* Darker background on hover */
+    color: #00bcd4; /* Neon blue for hover state */
+}
+
+/* Show dropdown content on click */
+.account-dropdown .account-link:focus + .account-dropdown-content,
+.account-dropdown:hover .account-dropdown-content {
+    display: block;
+}

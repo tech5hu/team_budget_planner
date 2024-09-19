@@ -1,0 +1,38 @@
+{% extends 'budgets/index.html' %}
+
+{% block content %}
+    <h2 class="section-title">Transactions List</h2>
+    
+    <!-- Check if there are any transactions to display -->
+    {% if transactions %}
+        <ul class="transaction-list">
+            {% for transaction in transactions %}
+                <li class="transaction-item">
+                    <div class="transaction-details">
+                        <span class="transaction-category">{{ transaction.category.name }}</span>
+                        <span class="transaction-amount">£{{ transaction.amount }}</span>
+                        <span class="transaction-date">on {{ transaction.transaction_date }}</span>
+                    </div>
+                    <div class="transaction-actions">
+                        <a href="{% url 'budgets:transaction_info' transaction.id %}" class="button small">View Details</a>
+                        
+                        {% if transaction.id %}
+                            <a href="{% url 'budgets:transaction_edit' transaction.id %}" class="button small">Edit</a>
+                            <a href="{% url 'budgets:transaction_delete' transaction.id %}" class="button small danger" onclick="return confirm('Are you sure you want to delete this transaction?');">Delete</a>
+                        {% else %}
+                            <span>Edit | Delete</span>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No transactions found.</p>
+    {% endif %}
+
+    <!-- Link to create a new transaction -->
+    <div class="action">
+        <a href="{% url 'budgets:transaction_form' %}" class="button">Add New Transaction</a>
+    </div>
+
+{% endblock %}

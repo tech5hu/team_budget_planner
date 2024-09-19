@@ -1,0 +1,12 @@
+{% extends 'budgets/index.html' %}
+
+{% block content %}
+    <main>
+        <h2>Welcome to Your Team Budget Planner!</h2>
+        <p>Manage your team budgets efficiently and easily with me.</p>
+        
+        <div class="button-group">
+            <a class="button" href="{% url 'budgets:dashboard' %}"> Click Here To Begin</a>
+        </div>
+    </main>
+{% endblock %}

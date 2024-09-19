@@ -1,0 +1,25 @@
+{% extends 'budgets/index.html' %}
+
+{% block title %}
+    {% if is_editing %}
+        Edit Transaction
+    {% else %}
+        Create Transaction
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h2>{% if is_editing %}Edit{% else %}Create{% endif %} Transaction</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Render the form fields dynamically -->
+        {{ form.as_p }}
+        
+        <button type="submit">Save Transaction</button>
+    </form>
+    
+    <a href="{% url 'budgets:transactions_list' %}">Back to Transactions List</a>
+{% endblock %}
+

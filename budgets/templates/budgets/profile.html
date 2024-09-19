@@ -1,0 +1,47 @@
+{% extends 'budgets/index.html' %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+{% block content %}
+    <h2>User Profile</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Display Username (pre-filled or read-only) -->
+        <div>
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+        </div>
+
+        <!-- Editable Email Field (pre-filled or read-only) -->
+        <div>
+            <label for="id_email">Email:</label>
+            {{ form.email }}
+        </div>
+
+        <!-- Display Account Level -->
+        <div>
+            <label for="account_level">Account Level:</label>
+            <input type="text" id="account_level" value="{{ account_level }}" readonly>
+        </div>
+
+        <!-- Display Team -->
+        <div>
+            <label for="team">Team:</label>
+            <input type="text" id="team" value="{{ team }}" readonly>
+        </div>
+
+        <!-- Display Work Phone Number -->
+        <div>
+            <label for="work_phone">Work Phone Number:</label>
+            <input type="text" id="work_phone" value="{{ number }}" readonly>
+        </div>
+
+        {% if not read_only %}
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        {% endif %}
+    </form>
+{% endblock %}

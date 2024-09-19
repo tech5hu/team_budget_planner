@@ -1,0 +1,19 @@
+{% extends 'budgets/index.html' %}
+
+{% block content %}
+    <h1>Transaction Details</h1>
+
+    <p><strong>Category:</strong> {{ transaction.expense_category.name }}</p>
+    <p><strong>Amount:</strong> £{{ transaction.amount }}</p>
+    <p><strong>Date:</strong> {{ transaction.transaction_date }}</p>
+    <p><strong>Payment Method:</strong> {{ transaction.payment_method }}</p>
+    <p><strong>Description:</strong> {{ transaction.description }}</p>
+    
+
+    {% if transaction.id %}
+        <a href="{% url 'budgets:transaction_edit' transaction.id %}">Edit Transaction</a>
+    {% endif %}
+    
+    <a href="{% url 'budgets:transactions_list' %}">Back to Transactions List</a>
+{% endblock %}
+
