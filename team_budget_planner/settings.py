@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-#5%k9e)&avd6_%ki2+hv9c#5hj60(ro-5!adesjmw7z%iexj8(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'budgets.herokuapp.com']
+ALLOWED_HOSTS = ['teambudgetplanner-d13fb2699cf5.herokuapp.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
