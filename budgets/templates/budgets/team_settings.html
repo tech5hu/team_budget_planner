@@ -1,0 +1,18 @@
+{% extends 'budgets/index.html' %}
+
+{% block content %}
+<h1>Your Team and Settings</h1>
+
+{% if team_settings %}
+    <ul>
+    {% for setting in team_settings %}
+        <li>{{ setting.team_name }} ({{ setting.currency }})</li>
+        <li>Preferred Communication: {{ setting.communication_preference }}</li>
+        <li>Role: {{ setting.role }}</li>
+        <li>Work Phone: {{ setting.work_phone }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No team settings available.</p>
+{% endif %}
+{% endblock %}

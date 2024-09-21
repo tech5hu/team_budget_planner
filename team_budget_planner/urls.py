@@ -20,13 +20,10 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('', include('budgets.urls', namespace='budgets')),  
-
+    path('accounts/', include('django.contrib.auth.urls')),  # Handles default auth views
+    path('', include('budgets.urls', namespace='budgets')),  # Routes to your budgets app
 ]
 
-if settings.DEBUG: 
+if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
-
-
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]  # Debug toolbar for development

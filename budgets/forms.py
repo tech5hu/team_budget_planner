@@ -1,17 +1,18 @@
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
-from .models import CustomUserModel, TeamMember, Budget, Transaction, UserCategory, ExpenseCategory, PaymentMethod, Team
+from .models import UserProfile, BudgetAndCategory, TeamAndSetting, Transaction
 
-class TeamMemberCreationForm(UserCreationForm):
-    username = forms.CharField(max_length=150, required=True)  # Keep username required
-    email = forms.EmailField(required=True)
-    password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
-    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
-    
+class UserProfileCreationForm(UserCreationForm):
     class Meta:
-        model = CustomUserModel
-        fields = ('username', 'email', 'password1', 'password2')  # Username included
-    
+        model = UserProfile
+        fields = ('username', 'password1', 'password2')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+        return user
+
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
@@ -22,26 +23,30 @@ class TeamMemberCreationForm(UserCreationForm):
 # Budget Form
 class BudgetForm(forms.ModelForm):
     class Meta:
-        model = Budget
-        fields = ['name', 'income_amount', 'expense_amount']
+        model = BudgetAndCategory
+        fields = ['budget_name', 'income_amount', 'expense_amount', 'expense_category']
 
 # Transaction Form
 class TransactionForm(forms.ModelForm):
     user_category = forms.ModelChoiceField(
-        queryset=UserCategory.objects.all(), 
+        queryset=UserProfile.objects.all(), 
         empty_label="Select User Category", 
         required=True
     )
     
     expense_category = forms.ModelChoiceField(
-        queryset=ExpenseCategory.objects.all(), 
+        queryset=BudgetAndCategory.objects.all(), 
         empty_label="Select Expense Category", 
         required=True
     )
     
-    payment_method = forms.ModelChoiceField(
-        queryset=PaymentMethod.objects.all(), 
-        empty_label="Select Payment Method", 
+    payment_method = forms.ChoiceField(
+        choices=[
+            ('personal_debit_card', 'Personal Debit Card'),
+            ('cash', 'Cash'),
+            ('company_voucher', 'Company Voucher'),
+            ('company_credit_card', 'Company Credit Card'),
+        ],
         required=True
     )
 
@@ -56,25 +61,22 @@ class TransactionForm(forms.ModelForm):
 class ReportFilterForm(forms.Form):
     start_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     end_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    category = forms.ModelChoiceField(queryset=ExpenseCategory.objects.all(), required=False)
 
 # Profile Update Form
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
-        model = TeamMember
+        model = UserProfile
         fields = ['role', 'team', 'work_phone']
 
 # Custom Password Change Form
 class CustomPasswordChangeForm(PasswordChangeForm):
-    class Meta:
-        fields = ('old_password', 'new_password1', 'new_password2')
+    pass  # No need for a Meta class here
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = CustomUserModel
-        fields = ['username', 'email', 'account_level', 'team', 'work_phone']
+        model = UserProfile
+        fields = ['username', 'team', 'work_phone']
         widgets = {
-            'account_level': forms.TextInput(attrs={'readonly': 'readonly'}),
             'team': forms.TextInput(attrs={'readonly': 'readonly'}),
             'work_phone': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
@@ -83,15 +85,18 @@ class UserProfileForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(UserProfileForm, self).__init__(*args, **kwargs)
 
-        # Apply read-only settings based on user role
         if user:
             if user.role != 'manager':
                 for field in self.fields:
                     self.fields[field].widget.attrs['readonly'] = 'readonly'
-            # Generate a random phone number if not set
             if not self.instance.work_phone:
                 self.instance.work_phone = self.generate_random_phone_number()
 
     def generate_random_phone_number(self):
         import random
         return f'{random.randint(1000000000, 9999999999)}'
+
+class TeamSettingsForm(forms.ModelForm):
+    class Meta:
+        model = TeamAndSetting
+        fields = ['team_name', 'currency', 'communication_preference', 'role', 'work_phone']

@@ -1,154 +1,128 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 import random
 
-class CustomUserManager(BaseUserManager):
-    def create_user(self, username, email, password=None, **extra_fields):
-        if not username:
-            raise ValueError("The Username field must be set")
+class UserProfileManager(BaseUserManager):
+    def create_user(self, email, username, password=None, **extra_fields):
         if not email:
-            raise ValueError("The Email field must be set")
+            raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
-        user = self.model(username=username, email=email, **extra_fields)
-        user.set_password(password)
+        user = self.model(email=email, username=username, **extra_fields)
+        user.set_password(password)  # Hash the password
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password=None, **extra_fields):
+    def create_superuser(self, email, username, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self.create_user(username, email, password, **extra_fields)
+        return self.create_user(email, username, password, **extra_fields)
 
-class CustomUserModel(AbstractBaseUser, PermissionsMixin):
+class UserProfile(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('regular', 'Regular'),
+    ]
+    ACCOUNT_LEVEL_CHOICES = [
         ('manager', 'Manager'),
         ('developer', 'Developer'),
     ]
-    account_level = models.CharField(max_length=20, default='Developer')
-    team = models.CharField(max_length=50, default='Video Game Consoles')
-    work_phone = models.CharField(max_length=15, blank=True, null=True, unique=True)
-    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,  # Correct way to refer to the custom user model
+        on_delete=models.CASCADE,
+        null=True,
+    )
+
+    USERNAME_FIELD = 'username'
+    
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
+    account_level = models.CharField(max_length=20, choices=ACCOUNT_LEVEL_CHOICES, default='developer')
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default='regular')
+    team = models.CharField(max_length=50, default='Video Game Consoles SDE Team')
+    work_phone = models.CharField(max_length=15, blank=True, null=True, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_manager = models.BooleanField(default=False)  # New field to check if user is a manager
+    full_name = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-    objects = CustomUserManager()
+    objects = UserProfileManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.username
 
     def generate_random_phone_number(self):
-        return f'{random.randint(1000000000, 9999999999)}'
+        while True:
+            phone_number = f'{random.randint(1000000000, 9999999999)}'
+            if not UserProfile.objects.filter(work_phone=phone_number).exists():
+                return phone_number
 
     def save(self, *args, **kwargs):
-        if not self.pk and not self.work_phone:  # If creating a new user and no phone number set
+        if not self.pk and not self.work_phone:
             self.work_phone = self.generate_random_phone_number()
-            print(f'Generated phone number in save: {self.work_phone}')  # Debug print
         super().save(*args, **kwargs)
 
-# Team Model
-class Team(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.names
-
-class TeamMember(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    role = models.CharField(max_length=50)  # User role (e.g., 'manager' or 'developer')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    team = models.ForeignKey('Team', on_delete=models.SET_NULL, null=True, blank=True)
-    work_phone = models.CharField(max_length=15, blank=True, null=True, unique=True)
-
-    class Meta:
-        permissions = [
-            ("manage_developers", "Can manage developer accounts"),
-        ]
-        verbose_name = 'Team Member'
-        verbose_name_plural = 'Team Members'
-
-    def __str__(self):
-        return self.user.username
-
-# Budget Model
-class Budget(models.Model):
-    name = models.CharField(max_length=100)
-    income_amount = models.DecimalField(decimal_places=2, max_digits=10)
-    expense_amount = models.DecimalField(decimal_places=2, max_digits=10)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class TeamAndSetting(models.Model):
+    TEAM_CHOICES = [
+        ('Video Game Consoles SDE Team', 'Video Game Consoles SDE Team'),
+    ]
+    CURRENCY_CHOICES = [
+        ('GBP', 'British Pound'),
+        ('USD', 'US Dollar'),
+    ]
+    
+    team_name = models.CharField(max_length=100, choices=TEAM_CHOICES, default='Video Game Consoles SDE Team')
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default='USD')
+    communication_preference = models.CharField(max_length=50, default='email')
+    role = models.CharField(max_length=50, choices=[('manager', 'Manager'), ('developer', 'Developer')])
+    work_phone = models.CharField(max_length=15, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.team_name
 
-    @property
-    def total_amount(self):
-        return self.income_amount - self.expense_amount
-
-# Expense Category Model
 class ExpenseCategory(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
-# Payment Method Model
-class PaymentMethod(models.Model):
-    name = models.CharField(max_length=100)
+class BudgetAndCategory(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    budget_name = models.CharField(max_length=100)
+    income_amount = models.DecimalField(decimal_places=2, max_digits=10)
+    expense_amount = models.DecimalField(decimal_places=2, max_digits=10)
+    expense_category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
+    payment_method = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.budget_name
 
-# Log Model
-class Log(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    action_type = models.CharField(max_length=100)
-    action_description = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-    related_id = models.PositiveIntegerField()
-
-    def __str__(self):
-        return f"Log {self.id} by {self.user.username} at {self.timestamp}"
-
-# Settings Model
-class Settings(models.Model):
-    user = models.ForeignKey(TeamMember, on_delete=models.CASCADE)
-    currency = models.CharField(max_length=10, default='USD')
-    default_view = models.CharField(max_length=50, default='list')
-    notification_preference = models.CharField(max_length=50, default='email')
-
-    def __str__(self):
-        return f"Settings for {self.user.user.username}"
-
-# User Category Model
-class UserCategory(models.Model):
-    user = models.ForeignKey(TeamMember, on_delete=models.CASCADE)
-    category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.user.username} - {self.category.name}"
-
-# Transaction Model
 class Transaction(models.Model):
     TRANSACTION_TYPE_CHOICES = [
         ('income', 'Income'),
         ('expense', 'Expense'),
     ]
     
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
-    user_category = models.ForeignKey(UserCategory, on_delete=models.CASCADE)
-    expense_category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
+    budget = models.ForeignKey(BudgetAndCategory, on_delete=models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    expense_category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE)
     transaction_date = models.DateField()
-    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
+    payment_method = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPE_CHOICES)
 
