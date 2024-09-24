@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from budgets.models import BudgetAndCategory, UserProfile, Transaction, TeamAndSetting, ExpenseCategory
 from django.contrib.auth.models import Group, User
 from django.db.models.signals import post_save
-from budgets.signals import create_user_profile, create_team_setting  # Import signals
+from budgets.signals import create_user_profile, create_team_setting
 import random
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware
@@ -143,7 +143,7 @@ class Command(BaseCommand):
         # Create TeamAndSetting records manually
         for user_profile in users:
             TeamAndSetting.objects.get_or_create(
-                team_name='Video Game Consoles SDE Team',
+                team_name='Default Team',  # Changed to a default name
                 user=user_profile.user,
                 currency='GBP',  # Always GBP
                 communication_preference=random.choice(communication_preferences),
@@ -203,3 +203,4 @@ class Command(BaseCommand):
             'Database Licensing': "Renewed database licenses."
         }
         return descriptions.get(category, "General transaction for unspecified category.")
+
