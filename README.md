@@ -30,7 +30,7 @@ Virtualenv is a tool that helps manage dependencies for different projects. It c
 
 pip install virtualenv
 
--**PostgreSQL**
+- **PostgreSQL**
 PostgreSQL is a powerful relational database system used to store the application’s data. Follow the instructions here to install PostgreSQL for your device: (https://www.postgresql.org/download/)
 
 After installation, verify that it was successful by running:
