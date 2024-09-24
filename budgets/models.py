@@ -126,7 +126,7 @@ class TeamAndSetting(models.Model):
     currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default='USD')  # Currency field
     communication_preference = models.CharField(max_length=50, default='email')  # Communication preference
     role = models.CharField(max_length=50, choices=[('manager', 'Manager'), ('developer', 'Developer')])  # Role field
-    work_phone = models.CharField(max_length=15, blank=True, null=True)  # Optional work phone field
+    work_phone = models.CharField(max_length=25, blank=True, null=True)  # Optional work phone field
     created_at = models.DateTimeField(auto_now_add=True)  # Timestamp for creation
     updated_at = models.DateTimeField(auto_now=True)  # Timestamp for updates
 

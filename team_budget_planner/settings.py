@@ -83,8 +83,8 @@ WSGI_APPLICATION = 'team_budget_planner.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),  # Use DATABASE_URL environment variable for Heroku
-        conn_max_age=600,
-        ssl_require=True
+        conn_max_age=600, 
+        ssl_require=True # Always require SSL for database connections in production
     )
 }
 
