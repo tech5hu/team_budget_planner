@@ -1,24 +1,26 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}
 
 {% block content %}
-<div class="recent-budgets">
-    <h2>Recent Budgets</h2>
-    {% if recent_budgets %}
-        <ul class="budget-list">
-            {% for budget in recent_budgets %}
-                <li class="budget-item">
-                    <div class="budget-details">
-                        <h3 class="budget-name">{{ budget.name }}</h3>
-                        <p class="budget-amount">Income: £{{ budget.income_amount }}</p>
-                        <p class="budget-amount">Expenses: £{{ budget.expense_amount }}</p>
-                        <p class="budget-amount">Remaining Amount: £{{ budget.total_amount }}</p>
-                    </div>
-                    <p class="budget-date">Created: {{ budget.created_at|date:"M d, Y, h:i a" }}</p>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p class="no-budgets">No recent budgets found.</p>
-    {% endif %}
+<div class="container">
+    <div class="tile recent-budgets">
+        <h2 class="tile-title">Recent Budgets</h2>  <!-- Section title for recent budgets -->
+        {% if recent_budgets %}
+            <ul class="budget-list">  <!-- List to hold recent budgets -->
+                {% for budget in recent_budgets %}
+                    <li class="tile budget-item">  <!-- Each budget is an item in the list -->
+                        <div class="budget-details">  <!-- Container for budget details -->
+                            <h3 class="budget-name">{{ budget.name }}</h3>  <!-- Displaying the budget name -->
+                            <p class="budget-amount">Income: £{{ budget.income_amount|floatformat:2 }}</p>  <!-- Displaying income with formatting -->
+                            <p class="budget-amount">Expenses: £{{ budget.expense_amount|floatformat:2 }}</p>  <!-- Displaying expenses with formatting -->
+                            <p class="budget-amount">Remaining Amount: £{{ budget.remaining_amount|floatformat:2 }}</p>  <!-- Displaying remaining amount -->
+                        </div>
+                        <p class="budget-date">Created: {{ budget.created_at|date:"M d, Y, h:i a" }}</p>  <!-- Displaying the creation date of the budget -->
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-budgets">No recent budgets found.</p>  <!-- Message if no budgets are available -->
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

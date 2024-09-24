@@ -1,47 +1,48 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}
 {% load static %}
 
 <head>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Linking to the CSS stylesheet -->
 </head>
 
 {% block content %}
-    <h2>User Profile</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
+    <h2>User Profile</h2>  <!-- Section heading for the user profile -->
+
+    <form method="post" enctype="multipart/form-data">  <!-- Form for profile data submission -->
+        {% csrf_token %}  <!-- CSRF token for security -->
+
         <!-- Display Username (pre-filled or read-only) -->
         <div>
             <label for="id_username">Username:</label>
-            {{ form.username }}
+            {{ form.username }}  <!-- Displaying username field from the form -->
         </div>
 
         <!-- Editable Email Field (pre-filled or read-only) -->
         <div>
             <label for="id_email">Email:</label>
-            {{ form.email }}
+            {{ form.email }}  <!-- Displaying email field from the form -->
         </div>
 
         <!-- Display Account Level -->
         <div>
             <label for="account_level">Account Level:</label>
-            <input type="text" id="account_level" value="{{ account_level }}" readonly>
+            <input type="text" id="account_level" value="{{ account_level }}" readonly>  <!-- Read-only input for account level -->
         </div>
 
         <!-- Display Team -->
         <div>
             <label for="team">Team:</label>
-            <input type="text" id="team" value="{{ team }}" readonly>
+            <input type="text" id="team" value="{{ team }}" readonly>  <!-- Read-only input for team name -->
         </div>
 
         <!-- Display Work Phone Number -->
         <div>
             <label for="work_phone">Work Phone Number:</label>
-            <input type="text" id="work_phone" value="{{ number }}" readonly>
+            <input type="text" id="work_phone" value="{{ number }}" readonly>  <!-- Read-only input for phone number -->
         </div>
 
-        {% if not read_only %}
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+        {% if not read_only %}  <!-- Conditional rendering for the save button -->
+            <button type="submit" class="btn btn-primary">Save Changes</button>  <!-- Button to save changes if not in read-only mode -->
         {% endif %}
     </form>
 {% endblock %}

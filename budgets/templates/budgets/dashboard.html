@@ -1,84 +1,77 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template for consistent layout -->
 
 {% block content %}
-<div class="container">
-    <!-- Budget Summary -->
-    <div class="dashboard-section">
-        <h2>Budget Summary</h2>
-        <div class="summary-item">
-            <span class="summary-label">Total Income:</span>
-            <span class="summary-value" id="totalIncome">£{{ budget_summary.total_income|floatformat:2 }}</span>
-        </div>
-        <div class="summary-item">
-            <span class="summary-label">Total Expenses:</span>
-            <span class="summary-value" id="totalExpenses">£{{ budget_summary.total_expense|floatformat:2 }}</span>
-        </div>
-        <div class="summary-item">
-            <span class="summary-label">Remaining Budget:</span>
-            <span class="summary-value" id="remainingBudget">£{{ budget_summary.remaining_budget|floatformat:2 }}</span>
-        </div>
-    </div>
+<div class="container">  <!-- Main container for the dashboard content -->
+    <div class="dashboard-tiles">  <!-- Wrapper for dashboard tiles -->
 
-    <!-- Expense Breakdown (Pie Chart) -->
-    <div class="dashboard-section">
-        <div class="pie-chart-container">
-            <canvas id="expenseChart" class="pie-chart"></canvas>
+        <!-- Team Budget Summary -->
+        <div class="tile dashboard-section">  <!-- Tile for displaying team budget summary -->
+            <h2 class="tile-title">Team Budget Summary</h2>  <!-- Title for the budget summary -->
+            <div class="summary-item">
+                <span class="summary-label">Total Income:</span>
+                <span class="summary-value" id="totalIncome">£{{ budget_summary.total_income|floatformat:2 }}</span>  <!-- Displaying total income -->
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Total Expenses:</span>
+                <span class="summary-value" id="totalExpenses">£{{ budget_summary.total_expense|floatformat:2 }}</span>  <!-- Displaying total expenses -->
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Remaining Budget:</span>
+                <span class="summary-value" id="remainingBudget">£{{ budget_summary.remaining_budget|floatformat:2 }}</span>  <!-- Displaying remaining budget -->
+            </div>
         </div>
-    </div>
 
-    <!-- Recent Transactions -->
-    <div class="dashboard-section">
-        <h2>Recent Transactions</h2>
-        <ul class="transaction-list">
-            {% for transaction in recent_transactions %}
-                <li class="transaction-item">
-                    <span class="transaction-date">{{ transaction.transaction_date }}</span>
-                    <span class="transaction-details">{{ transaction.expense_category.name }}</span>
-                    <span class="transaction-amount">£{{ transaction.amount|floatformat:2 }}</span>
-                </li>
-            {% empty %}
-                <li class="no-transactions">No recent transactions.</li>
-            {% endfor %}
-        </ul>
+        <!-- Expense Breakdown (Pie Chart) -->
+        <div class="tile dashboard-section">  <!-- Tile for displaying the expense breakdown pie chart -->
+            <h2 class="tile-title">Team Expense Breakdown</h2>  <!-- Title for the expense breakdown -->
+            <div class="pie-chart-container">  <!-- Container for the pie chart -->
+                <canvas id="expenseChart" class="pie-chart"></canvas>  <!-- Canvas element for rendering the pie chart -->
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="tile dashboard-section">  <!-- Tile for displaying recent transactions -->
+            <h2 class="tile-title">Team Recent Transactions</h2>  <!-- Title for the recent transactions section -->
+            <ul class="transaction-list">  <!-- Unordered list for displaying transactions -->
+                {% for transaction in recent_transactions %}
+                    <li class="transaction-item">  <!-- List item for each transaction -->
+                        <span class="transaction-date">{{ transaction.transaction_date|date:"F j, Y" }}</span>  <!-- Displaying the transaction date -->
+                        <span class="transaction-details">{{ transaction.description }}</span>  <!-- Displaying transaction details/description -->
+                        <span class="transaction-amount">£{{ transaction.amount|floatformat:2 }}</span>  <!-- Displaying transaction amount -->
+                    </li>
+                {% empty %}
+                    <li class="no-transactions">No recent transactions.</li>  <!-- Message displayed when there are no recent transactions -->
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 </div>
 
 <!-- Chart.js Pie Chart Script -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Including Chart.js library for pie chart rendering -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var ctx = document.getElementById('expenseChart').getContext('2d');
+        // Extracting labels and data for the pie chart from the expense breakdown
+        var labels = [{% for item in expense_breakdown %}'{{ item.expense_category__name }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+        var data = [{% for item in expense_breakdown %}{{ item.total_amount }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+        var ctx = document.getElementById('expenseChart').getContext('2d');  // Getting the 2D context of the canvas
         var expenseChart = new Chart(ctx, {
-            type: 'pie',
+            type: 'pie',  // Setting the chart type to pie
             data: {
-                labels: [{% for item in expense_breakdown %}'{{ item.expense_category__name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+                labels: labels,  // Assigning labels to the chart
                 datasets: [{
                     label: 'Expense Breakdown',
-                    data: [{% for item in expense_breakdown %}{{ item.total_amount }}{% if not forloop.last %}, {% endif %}{% endfor %}],
-                    backgroundColor: [
-                        '#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40', '#4bc0c0'
-                    ],
-                    borderColor: '#fff',
-                    borderWidth: 1
+                    data: data,  // Assigning data to the chart
+                    backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#ffce56', '#ff9f40'],  // Color palette for the chart
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false, // Allow the chart to be responsive
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': £' + tooltipItem.raw.toFixed(2);
-                            }
-                        }
-                    }
-                }
+                responsive: true,  // Making the chart responsive
+                maintainAspectRatio: false,  // Allowing the chart to adjust its aspect ratio
             }
         });
     });
 </script>
+
 {% endblock %}

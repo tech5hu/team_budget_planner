@@ -1,25 +1,24 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}
 
 {% block title %}
     {% if is_editing %}
-        Edit Transaction
+        Edit Transaction  <!-- Title displayed when editing an existing transaction -->
     {% else %}
-        Create Transaction
+        Create Transaction  <!-- Title displayed when creating a new transaction -->
     {% endif %}
 {% endblock %}
 
 {% block content %}
     <h2>{% if is_editing %}Edit{% else %}Create{% endif %} Transaction</h2>
     
-    <form method="post">
-        {% csrf_token %}
+    <form method="post">  <!-- Start of the form to create or edit a transaction -->
+        {% csrf_token %}  <!-- CSRF token for security against cross-site request forgery -->
         
         <!-- Render the form fields dynamically -->
-        {{ form.as_p }}
+        {{ form.as_p }}  <!-- Displays the form fields as paragraph elements for layout -->
         
-        <button type="submit">Save Transaction</button>
+        <button type="submit">Save Transaction</button>  <!-- Button to submit the form -->
     </form>
     
-    <a href="{% url 'budgets:transactions_list' %}">Back to Transactions List</a>
+    <a href="{% url 'budgets:transactions_list' %}" class="button click-here-link">Back to Transactions List</a>  <!-- Link to navigate back to the list of transactions -->
 {% endblock %}
-

@@ -1,19 +1,18 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}
 
 {% block content %}
-    <h1>Transaction Details</h1>
+    <h1>Transaction Details</h1>  <!-- Main heading for the transaction details page -->
 
-    <p><strong>Category:</strong> {{ transaction.expense_category.name }}</p>
-    <p><strong>Amount:</strong> £{{ transaction.amount }}</p>
-    <p><strong>Date:</strong> {{ transaction.transaction_date }}</p>
-    <p><strong>Payment Method:</strong> {{ transaction.payment_method }}</p>
-    <p><strong>Description:</strong> {{ transaction.description }}</p>
-    
+    <p><strong>Transaction Type:</strong> {{ transaction.transaction_type }}</p>  <!-- Display the type of transaction (income or expense) -->
+    <p><strong>Category:</strong> {{ transaction.expense_category.name }}</p>  <!-- Display the name of the expense category associated with the transaction -->
+    <p><strong>Amount:</strong> £{{ transaction.amount|floatformat:2 }}</p>  <!-- Display the amount of the transaction formatted to 2 decimal places -->
+    <p><strong>Date:</strong> {{ transaction.transaction_date|date:"F j, Y" }}</p>  <!-- Display the date of the transaction formatted as "Month Day, Year" -->
+    <p><strong>Payment Method:</strong> {{ transaction.payment_method }}</p>  <!-- Display the payment method used for the transaction -->
+    <p><strong>Description:</strong> {{ transaction.description }}</p>  <!-- Display a description of the transaction for additional context -->
 
     {% if transaction.id %}
-        <a href="{% url 'budgets:transaction_edit' transaction.id %}">Edit Transaction</a>
+        <a href="{% url 'budgets:transaction_edit' transaction.id %}" class="button click-here-link">Edit Transaction</a>  <!-- Link to edit the transaction, only shown if the transaction has an ID -->
     {% endif %}
     
-    <a href="{% url 'budgets:transactions_list' %}">Back to Transactions List</a>
+    <a href="{% url 'budgets:transactions_list' %}" class="button click-here-link">Back to Transactions List</a>  <!-- Link to navigate back to the list of transactions -->
 {% endblock %}
-

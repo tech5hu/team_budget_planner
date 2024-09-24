@@ -1,32 +1,59 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template for consistent layout -->
+{% load custom_filters %}  <!-- Loading custom filters for use in the template -->
 
 {% block content %}
-    <h2 class="section-title">Budgets List</h2>
-    
-    <!-- Check if there are any budgets to display -->
-    {% if budgets %}
-        <ul class="budget-list">
-            {% for budget in budgets %}
-                <li class="budget-item">
-                    <div class="budget-details">
-                        <span class="budget-name"><strong>{{ budget.name }}</strong></span>
-                        <span class="budget-amount">Income: £{{ budget.income_amount }}</span>
-                    </div>
-                    <div class="budget-actions">
-                        <a href="{% url 'budgets:budget_info' budget.id %}" class="button small">View Details</a>
-                        <a href="{% url 'budgets:budget_edit' budget.id %}" class="button small">Edit</a>
-                        <a href="{% url 'budgets:budget_delete' budget.id %}" class="button small danger" onclick="return confirm('Are you sure you want to delete this budget?');">Delete</a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No budgets found.</p>
-    {% endif %}
-    
-    <!-- Link to create a new budget -->
-    <div class="action">
-        <a href="{% url 'budgets:budget_form' %}" class="button">Add A New Budget</a>
+    <h2 class="section-title">Team Budgets List</h2>  <!-- Header for the team budgets list -->
+
+    <div class="header-buttons">
+        <a href="{% url 'budgets:budget_form' %}" class="btn">Add New Budget</a>  <!-- Button to add a new budget -->
     </div>
 
+    {% if budgets %}
+        {% regroup budgets by expense_category as grouped_budgets %}  <!-- Grouping budgets by their expense category -->
+        
+        {% for category in grouped_budgets %}
+            <h3 class="category-title">{{ category.grouper }}</h3>  <!-- Displaying the name of the expense category -->
+            <ul class="budget-list">  <!-- Unordered list for displaying budgets in this category -->
+                {% for budget in category.list %}
+                    <li class="budget-item">  <!-- List item for each budget -->
+                        <div class="budget-details">
+                            <span class="budget-name">  <!-- Span for the budget name -->
+                                <strong>
+                                    {% if budget.id == 1 %}
+                                        Monthly Cloud Service Subscription
+                                    {% elif budget.id == 2 %}
+                                        Annual Software License Fees
+                                    {% elif budget.id == 3 %}
+                                        Budget for Development Tool Licenses
+                                    {% elif budget.id == 4 %}
+                                        Employee Training and Development Budget
+                                    {% elif budget.id == 5 %}
+                                        Quarterly Server Maintenance Costs
+                                    {% elif budget.id == 6 %}
+                                        Annual Network Equipment Purchases
+                                    {% elif budget.id == 7 %}
+                                        Budget for Performance Testing Services
+                                    {% elif budget.id == 8 %}
+                                        Monthly Subscription for Project Management Tools
+                                    {% elif budget.id == 9 %}
+                                        Yearly Budget for Team Collaboration Tools
+                                    {% elif budget.id == 10 %}
+                                        Annual Database License Renewal Fees
+                                    {% endif %}
+                                </strong>
+                            </span>
+                            <span class="budget-amount">Remaining: £{{ budget.remaining_amount|floatformat:2|default:"N/A" }}</span>  <!-- Displaying the remaining budget amount, formatted to 2 decimal places, defaulting to "N/A" if not available -->
+                        </div>
+                        <div class="budget-actions">  <!-- Actions for the budget item -->
+                            <a href="{% url 'budgets:budget_info' budget.id %}" class="button small">View Details</a>  <!-- Link to view budget details -->
+                            <a href="{% url 'budgets:budget_edit' budget.id %}" class="button small">Edit</a>  <!-- Link to edit the budget -->
+                            <a href="{% url 'budgets:budget_delete' budget.id %}" class="button small danger" onclick="return confirm('Are you sure you want to delete this budget?');">Delete</a>  <!-- Link to delete the budget with confirmation prompt -->
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>No budgets found.</p>  <!-- Message displayed when no budgets are available -->
+    {% endif %}
 {% endblock %}

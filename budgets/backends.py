@@ -1,26 +1,24 @@
-# budgets/backends.py
+# backends.py
+from django.contrib.auth.backends import ModelBackend  # Importing ModelBackend for custom authentication
+from .models import UserProfile  # Importing UserProfile model for user authentication
+import logging  # Importing logging for debug and warning messages
 
-from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth import get_user_model
+# Setting up logging for the authentication process
+logger = logging.getLogger(__name__)
 
-class EmailBackend(BaseBackend):
-    """
-    Custom authentication backend that allows users to log in using their email and password.
-    """
+class EmailBackend(ModelBackend):
+    # Custom authenticate method to allow authentication using email
     def authenticate(self, request, email=None, password=None, **kwargs):
-        UserModel = get_user_model()
+        logger.debug(f'Attempting to authenticate user with email: {email}')  # Log authentication attempt
         try:
-            user = UserModel.objects.get(email=email)
-        except UserModel.DoesNotExist:
-            return None
-
-        if user.check_password(password):
-            return user
-        return None
-
-    def get_user(self, user_id):
-        UserModel = get_user_model()
-        try:
-            return UserModel.objects.get(pk=user_id)
-        except UserModel.DoesNotExist:
-            return None
+            user = UserProfile.objects.get(email=email)  # Attempt to retrieve the user by email
+        except UserProfile.DoesNotExist:
+            logger.warning('User not found')  # Log a warning if the user does not exist
+            return None  # Return None if the user is not found
+        
+        if user.check_password(password):  # Check if the provided password is correct
+            logger.debug('User authenticated successfully')  # Log successful authentication
+            return user  # Return the authenticated user
+        
+        logger.warning('Password mismatch')  # Log a warning for password mismatch
+        return None  # Return None if the password does not match

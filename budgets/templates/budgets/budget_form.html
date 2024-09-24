@@ -1,42 +1,40 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template for consistent layout -->
 
 {% block content %}
-    <h2>{% if budget.id %}Edit{% else %}Create{% endif %} Budget</h2>
+    <h2>{% if budget.id %}Edit{% else %}Create{% endif %} Budget</h2>  <!-- Conditional header for editing or creating a budget -->
     
-    <!-- Display form errors if there are any -->
-    {% if form.errors %}
-        <div class="form-errors">
+    {% if form.errors %}  <!-- Checking if there are any form errors -->
+        <div class="form-errors">  <!-- Container for displaying errors -->
             <ul>
-                {% for field in form %}
-                    {% for error in field.errors %}
-                        <li>{{ field.label }}: {{ error }}</li>
+                {% for field in form %}  <!-- Iterating through each field in the form -->
+                    {% for error in field.errors %}  <!-- Iterating through each error for the current field -->
+                        <li>{{ field.label }}: {{ error }}</li>  <!-- Displaying the field label and associated error -->
                     {% endfor %}
                 {% endfor %}
-                {% for error in form.non_field_errors %}
-                    <li>{{ error }}</li>
+                {% for error in form.non_field_errors %}  <!-- Displaying any non-field specific errors -->
+                    <li>{{ error }}</li>  <!-- Displaying the non-field error -->
                 {% endfor %}
             </ul>
         </div>
     {% endif %}
     
-    <form method="post">
-        {% csrf_token %}
+    <form method="post">  <!-- Form for budget creation/editing -->
+        {% csrf_token %}  <!-- CSRF protection token for security -->
         
-        <!-- Manually render the form fields with custom labels and inputs -->
-        <label for="{{ form.name.id_for_label }}">Budget Name:</label>
-        {{ form.name }}<br>
-        
-        <label for="{{ form.income_amount.id_for_label }}">Income:</label>
-        {{ form.income_amount }}<br>
+        <label for="{{ form.budget_name.id_for_label }}">Budget Name:</label>  <!-- Label for the budget name field -->
+        {{ form.budget_name }}<br>  <!-- Rendering the budget name input field -->
 
-        <label for="{{ form.expense_amount.id_for_label }}">Expenses:</label>
-        {{ form.expense_amount }}<br>
+        <label for="{{ form.income_amount.id_for_label }}">Income:</label>  <!-- Label for the income amount field -->
+        {{ form.income_amount }}<br>  <!-- Rendering the income amount input field -->
 
-        <button type="submit" class="button">Save Budget</button>
+        <label for="{{ form.expense_amount.id_for_label }}">Expenses:</label>  <!-- Label for the expense amount field -->
+        {{ form.expense_amount }}<br>  <!-- Rendering the expense amount input field -->
+
+        <label for="{{ form.expense_category.id_for_label }}">Expense Category:</label>  <!-- Label for the expense category field -->
+        {{ form.expense_category }}<br>  <!-- Rendering the expense category input field -->
+
+        <button type="submit" class="button">Save Budget</button>  <!-- Submit button to save the budget -->
     </form>
 
-    <!-- Link to go back to the budgets list -->
-    <a href="{% url 'budgets:budgets_list' %}">Back to Budgets List</a>
+    <a href="{% url 'budgets:budgets_list' %}" class="button click-here-link">Back to Budgets List</a>  <!-- Link to return to the budgets list -->
 {% endblock %}
-
-

@@ -49,48 +49,10 @@ nav a:hover, nav a.active {
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-/* Sidebar Styling */
-aside {
-    width: 250px;
-    background: linear-gradient(180deg, #2e2e2e, #1e1e1e); /* Dark grey gradient */
-    padding: 20px;
-    color: #f4f4f9; /* Light text for contrast */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for separation */
-    height: 100vh; /* Full height of the viewport */
-    box-sizing: border-box; /* Include padding and border in width and height */
-}
-
-aside h2 {
-    font-size: 1.5em;
-    margin-top: 0;
-    color: #00bcd4; /* Neon blue for headers */
-}
-
-aside ul {
-    padding: 0;
-}
-
-aside ul li {
-    margin-bottom: 10px;
-}
-
-aside ul li a {
-    color: #b3b3b3; /* Lighter link color */
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-aside ul li a:hover {
-    background-color: #333; /* Slightly darker background on hover */
-    color: #00bcd4; /* Neon blue for hover state */
-}
-
 /* Container Flexbox Layout */
 .container {
     display: flex;
+    flex-direction: column; /* Column layout for sections */
 }
 
 /* Main Content Styling */
@@ -100,6 +62,92 @@ main {
     background-color: #2e2e2e; /* Darker background for content */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+}
+
+/* Tile styling that can be used universally */
+.tile {
+    background-color: #2e2e2e;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.tile:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
+.tile-title {
+    font-size: 1.5em;
+    color: hsl(187, 100%, 42%);
+    margin-bottom: 10px;
+}
+
+.tile-content {
+    font-size: 1em;
+    color: #f4f4f9;
+}
+
+/* Pie Chart Container */
+.pie-chart-container {
+    width: 100%; /* Make it responsive */
+    height: 300px; /* Set a specific height */
+    margin: 20px 0; /* Add spacing above and below */
+}
+
+/* Updated List Styles */
+.transaction-list, .budget-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
+/* Default link color for budget and transaction lists */
+.budget-list a, .transaction-list a {
+    color: #00bcd4; /* Amazon Prime Video blue */
+}
+
+/* Accessed link color for budget and transaction lists */
+.budget-list a:visited, .transaction-list a:visited {
+    color: #e4c083; /* Desired color for accessed links */
+}
+
+/* Hover effect for budget and transaction list links */
+.budget-list a:hover, .transaction-list a:hover {
+    color: #00bcd4; /* You can set this to your preferred hover color */
+}
+
+.transaction-item, .budget-item {
+    background-color: #2e2e2e;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px;
+    flex-basis: 45%; /* Adjusted for better spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.transaction-item:hover, .budget-item:hover {
+    transform: scale(1.05);
+    background-color: #444;
+}
+
+.transaction-item h3, .budget-item h3 {
+    color: #00bcd4;
+    margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .transaction-item, .budget-item {
+        flex-basis: 100%; /* Full width on smaller screens */
+    }
+    .pie-chart-container {
+        height: 200px; /* Smaller height on mobile */
+    }
 }
 
 /* Form Styling */
@@ -146,103 +194,180 @@ form button:hover {
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-/* Link Styling */
-a {
-    color: #00bcd4; /* Neon blue */
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* List Styling */
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    padding: 8px 0;
-    border-bottom: 1px solid #444; /* Dark border for list items */
-}
-
-li:last-child {
-    border-bottom: none; /* Remove border for last item */
-}
-
 /* Error List Styling */
 .errorlist {
     color: #dc3545; /* Bootstrap's red color for error messages */
     border: 1px solid #dc3545;
-    padding: 15px;
-    border-radius: 4px;
-    background-color: #f8d7da;
-    margin-bottom: 15px;
+    background-color: #f8d7da; /* Light red background for error messages */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
 
-.errorlist ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+.container {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: row; /* Arrange items in a row */
 }
 
-.errorlist li {
-    margin: 5px 0;
+.sidebar {
+    width: 250px; /* Fixed width for the sidebar */
+    background-color: #2e2e2e; /* Match the main content background */
+    padding: 20px; /* Padding for content inside the sidebar */
+    border-radius: 8px; /* Rounded corners for a softer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    color: #f4f4f9; /* Light text color for contrast */
 }
 
-/* Account Dropdown */
+.sidebar ul {
+    list-style: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.sidebar li {
+    margin: 15px 0; /* Space between items */
+}
+
+.sidebar a {
+    color: #00bcd4; /* Neon blue for links */
+    text-decoration: none; /* Remove underline */
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    padding: 10px; /* Padding for clickable area */
+    border-radius: 5px; /* Rounded corners for links */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.sidebar a:hover {
+    background-color: #444; /* Highlight on hover */
+    color: #fff; /* Change text color on hover */
+}
+
+.sidebar a i {
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.report-section {
+    background-color: #2e2e2e; /* Match with the rest of your site */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    color: #f4f4f9; /* Light text color for contrast */
+    margin-bottom: 20px; /* Space at the bottom */
+}
+
+.report-form {
+    margin-bottom: 20px; /* Space below the form */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space between form elements */
+}
+
+.report-summary {
+    margin-bottom: 20px; /* Space below the summary */
+    padding: 10px;
+    border: 1px solid #444; /* Dark border */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.report-table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* No space between borders */
+}
+
+.report-table th, .report-table td {
+    padding: 10px;
+    border: 1px solid #444; /* Dark border for table */
+    text-align: left; /* Left align text */
+}
+
+.report-table th {
+    background-color: #333; /* Dark background for header */
+    color: #00bcd4; /* Neon blue for header text */
+}
+
+.report-table tr:nth-child(even) {
+    background-color: #3a3a3a; /* Alternate row color */
+}
+
+.report-table tr:hover {
+    background-color: #444; /* Highlight row on hover */
+}
+
+.header-buttons {
+    display: flex;
+    justify-content: flex-end; /* Aligns button to the right */
+    margin: 20px 0; /* Adds some spacing */
+}
+
+.header-buttons .btn {
+    background-color: #00bcd4; /* Button color */
+    color: #fff; /* White text */
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none; /* Removes underline */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.header-buttons .btn:hover {
+    background-color: #0097a7; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+nav {
+    display: flex; /* Flexbox for alignment */
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center items vertically */
+    padding: 10px; /* Consistent padding */
+}
+
 .account-dropdown {
-    position: relative;
-    display: inline-block;
+    position: relative; /* Required for dropdown positioning */
+    margin-left: auto; /* Pushes dropdown to the right */
 }
 
 .account-link {
-    background-color: #333; /* Dark background for consistency */
-    color: #00bcd4; /* Neon blue text */
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-block;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    color: #00bcd4; /* Account link color */
+    text-decoration: none; /* No underline */
+    padding: 10px 15px; /* Padding for clickable area */
+    cursor: pointer; /* Pointer cursor */
 }
 
-.account-link:hover {
-    background-color: #444; /* Darker shade on hover */
-}
-
-/* Style the dropdown content */
 .account-dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%; /* Position below the account link */
-    right: 0;  /* Align to the right */
-    background-color: #2e2e2e; /* Darker background to match the site */
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    border-radius: 4px;
+    display: none; /* Hidden by default */
+    position: absolute; /* Position dropdown below the button */
+    background-color: #303030; /* Dropdown background color */
+    min-width: 160px; /* Minimum width of dropdown */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Shadow for dropdown */
+    z-index: 1; /* Ensure dropdown is above other content */
+    right: 0; /* Align dropdown to the right */
 }
 
-/* Style dropdown menu items */
-.account-dropdown-content a {
-    color: #f4f4f9; /* Light text color for contrast */
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-/* Change background color of items on hover */
-.account-dropdown-content a:hover {
-    background-color: #444; /* Darker background on hover */
-    color: #00bcd4; /* Neon blue for hover state */
-}
-
-/* Show dropdown content on click */
-.account-dropdown .account-link:focus + .account-dropdown-content,
 .account-dropdown:hover .account-dropdown-content {
-    display: block;
+    display: block; /* Show dropdown on hover */
+}
+
+.account-dropdown-content a {
+    color: #00bcd4; /* Text color */
+    padding: 12px 16px; /* Link padding */
+    text-decoration: none; /* No underline */
+    display: block; /* Block display for links */
+}
+
+.account-dropdown-content a:hover {
+    background-color: #ddd; /* Background color on hover */
+}
+
+.click-here-link {
+    color: #00bcd4; /* Default link color (Amazon Prime Video blue) */
+    text-decoration: none; /* Remove underline */
+}
+
+.click-here-link:hover {
+    color: #e4c083; /* Accessed link color */
+}
+
+.summary-item {
+    margin-bottom: 40px; /* Increased margin for space between summary items */
 }

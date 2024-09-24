@@ -1,10 +1,10 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template for consistent design and layout -->
 
 {% block content %}
-<h2>Add Transaction</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Transaction</button>
+<h2>Add Transaction</h2>  <!-- Heading for the transaction addition form -->
+<form method="post">  <!-- Starting a form that submits data via POST method -->
+    {% csrf_token %}  <!-- Including a CSRF token for security to prevent cross-site request forgery -->
+    {{ form.as_p }}  <!-- Rendering the form fields as paragraph elements for easier styling and layout -->
+    <button type="submit">Add Transaction</button>  <!-- Submit button for the form to add the transaction -->
 </form>
 {% endblock %}

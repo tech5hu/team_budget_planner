@@ -1,12 +1,12 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template for consistent layout -->
 
 {% block content %}
     <main>
-        <h2>Welcome to Your Team Budget Planner!</h2>
-        <p>Manage your team budgets efficiently and easily with me.</p>
-        
-        <div class="button-group">
-            <a class="button" href="{% url 'budgets:dashboard' %}"> Click Here To Begin</a>
+        <h2>Welcome To Your Team Budget Planner!</h2>  <!-- Main welcome heading -->
+        <p>Manage your team budgets efficiently and easily with me.</p>  <!-- Introductory paragraph -->
+
+        <div class="button-group">  <!-- Grouping buttons for layout -->
+            <a href="{% url 'budgets:dashboard' %}" class="click-here-link">Click Here To Begin</a>  <!-- Link to navigate to the dashboard -->
         </div>
     </main>
 {% endblock %}

@@ -1,38 +1,43 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}
+{% load custom_filters %}
 
 {% block content %}
-    <h2 class="section-title">Transactions List</h2>
-    
-    <!-- Check if there are any transactions to display -->
-    {% if transactions %}
-        <ul class="transaction-list">
-            {% for transaction in transactions %}
-                <li class="transaction-item">
-                    <div class="transaction-details">
-                        <span class="transaction-category">{{ transaction.category.name }}</span>
-                        <span class="transaction-amount">£{{ transaction.amount }}</span>
-                        <span class="transaction-date">on {{ transaction.transaction_date }}</span>
-                    </div>
-                    <div class="transaction-actions">
-                        <a href="{% url 'budgets:transaction_info' transaction.id %}" class="button small">View Details</a>
-                        
-                        {% if transaction.id %}
-                            <a href="{% url 'budgets:transaction_edit' transaction.id %}" class="button small">Edit</a>
-                            <a href="{% url 'budgets:transaction_delete' transaction.id %}" class="button small danger" onclick="return confirm('Are you sure you want to delete this transaction?');">Delete</a>
-                        {% else %}
-                            <span>Edit | Delete</span>
-                        {% endif %}
-                    </div>
+    <h2 class="section-title">Team Transactions List</h2>  <!-- Main heading for the team transactions list -->
+
+    <div class="header-buttons">
+        <a href="{% url 'budgets:transaction_form' %}" class="btn">Add New Transaction</a>  <!-- Button to add a new transaction -->
+    </div>
+
+    {% if grouped_transactions %}
+        <ul class="transaction-list">  <!-- Begin the list of grouped transactions -->
+            {% for category in grouped_transactions %}
+                <li class="transaction-category">  <!-- Start of a category for transactions -->
+                    <h3>{{ category.expense_category__name }} (Total: £{{ category.total_amount|floatformat:2 }})</h3>  <!-- Display category name and total amount -->
+                    <ul>
+                        {% for transaction in categorised_transactions|get_category_transactions:category.expense_category__name %}
+                            <li class="transaction-item">  <!-- Start of an individual transaction item -->
+                                <div class="transaction-details">
+                                    <span class="transaction-amount">£{{ transaction.amount|floatformat:2 }}</span>  <!-- Format amount to 2 decimal places -->
+                                    <span class="transaction-date">on {{ transaction.transaction_date }}</span>  <!-- Display the transaction date -->
+                                </div>
+                                <div class="transaction-actions">  <!-- Section for action buttons related to the transaction -->
+                                    <a href="{% url 'budgets:transaction_info' transaction.id %}" class="button small click-here-link">View Details</a>  <!-- Link to view transaction details -->
+                                    
+                                    {% if transaction.id %}
+                                        <a href="{% url 'budgets:transaction_edit' transaction.id %}" class="button small click-here-link">Edit</a>  <!-- Link to edit the transaction -->
+                                        <a href="{% url 'budgets:transaction_delete' transaction.id %}" class="button small danger" onclick="return confirm('Are you sure you want to delete this transaction?');">Delete</a>  <!-- Link to delete the transaction with a confirmation prompt -->
+                                    {% else %}
+                                        <span>Edit | Delete</span>  <!-- Placeholder when transaction ID is not available -->
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>No transactions found.</p>
+        <p>No transactions found.</p>  <!-- Message displayed if no transactions are available -->
     {% endif %}
-
-    <!-- Link to create a new transaction -->
-    <div class="action">
-        <a href="{% url 'budgets:transaction_form' %}" class="button">Add New Transaction</a>
-    </div>
-
 {% endblock %}
+

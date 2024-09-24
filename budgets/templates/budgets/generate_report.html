@@ -1,31 +1,32 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template for consistent layout -->
 
 {% block content %}
-  <h1>Generate Report</h1>
+  <h1>Generate Report</h1>  <!-- Main heading for the report generation page -->
 
-  <form method="post" action="{% url 'budgets:generate_report' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Generate Report</button>
+  <form method="post" action="{% url 'budgets:generate_report' %}">  <!-- Form for generating reports -->
+    {% csrf_token %}  <!-- CSRF token for security -->
+    {{ form.as_p }}  <!-- Rendering the form fields as paragraphs -->
+    <button type="submit">Generate Report</button>  <!-- Button to submit the form -->
   </form>
 
   {% if transactions %}
-    <h2>Report Summary</h2>
+    <h2>Report Summary</h2>  <!-- Heading for the report summary section -->
 
     <!-- Bar Chart for Total Spending by Category -->
-    <canvas id="categorySpendingChart" width="400" height="200"></canvas>
+    <canvas id="categorySpendingChart" width="400" height="200"></canvas>  <!-- Canvas for the bar chart -->
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <!-- Including Chart.js library -->
     <script>
-      const ctx = document.getElementById('categorySpendingChart').getContext('2d');
-      const categories = [];
-      const amounts = [];
+      const ctx = document.getElementById('categorySpendingChart').getContext('2d');  // Getting the context for the canvas
+      const categories = [];  // Array to hold categories
+      const amounts = [];  // Array to hold amounts
       
       {% for transaction in transactions %}
-        categories.push('{{ transaction.expense_category.name }}');
-        amounts.push({{ transaction.amount }});
+        categories.push('{{ transaction.expense_category.name }}');  // Pushing category names into the array
+        amounts.push({{ transaction.amount }});  // Pushing transaction amounts into the array
       {% endfor %}
 
+      // Getting unique categories and calculating total amounts for each
       const uniqueCategories = [...new Set(categories)];
       const categoryTotals = uniqueCategories.map(category => {
         return categories.reduce((total, currentCategory, index) => {
@@ -33,33 +34,34 @@
         }, 0);
       });
 
+      // Creating the bar chart using Chart.js
       const categorySpendingChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'bar',  // Setting chart type to bar
         data: {
-          labels: uniqueCategories,
+          labels: uniqueCategories,  // Labels for the x-axis
           datasets: [{
-            label: 'Spending by Category (£)',
-            data: categoryTotals,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
+            label: 'Spending by Category (£)',  // Label for the dataset
+            data: categoryTotals,  // Data for the y-axis
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Background color for the bars
+            borderColor: 'rgba(75, 192, 192, 1)',  // Border color for the bars
+            borderWidth: 1  // Border width for the bars
           }]
         },
         options: {
           scales: {
             y: {
-              beginAtZero: true
+              beginAtZero: true  // Starting the y-axis at zero
             }
           }
         }
       });
     </script>
 
-    <p>Total Amount: £{{ total_amount|floatformat:2 }}</p> <!-- Format total amount -->
+    <p>Total Amount: £{{ total_amount|floatformat:2 }}</p>  <!-- Displaying the total amount formatted to 2 decimal places -->
 
     <!-- Enhanced Table for Transactions -->
-    <div class="report-container">
-      <table class="report-table">
+    <div class="report-container">  <!-- Container for the report table -->
+      <table class="report-table">  <!-- Table for displaying transactions -->
         <thead>
           <tr>
             <th>Date</th>
@@ -71,14 +73,14 @@
         <tbody>
           {% for transaction in transactions %}
             <tr>
-              <td>{{ transaction.transaction_date }}</td>
-              <td>{{ transaction.expense_category.name }}</td>
-              <td>£{{ transaction.amount|floatformat:2 }}</td>
-              <td>{{ transaction.description }}</td>
+              <td>{{ transaction.transaction_date }}</td>  <!-- Displaying transaction date -->
+              <td>{{ transaction.expense_category.name }}</td>  <!-- Displaying expense category name -->
+              <td>£{{ transaction.amount|floatformat:2 }}</td>  <!-- Displaying transaction amount formatted to 2 decimal places -->
+              <td>{{ transaction.description }}</td>  <!-- Displaying transaction description -->
             </tr>
           {% empty %}
             <tr>
-              <td colspan="4">No transactions found</td>
+              <td colspan="4">No transactions found</td>  <!-- Message displayed when no transactions are found -->
             </tr>
           {% endfor %}
         </tbody>

@@ -1,4 +1,6 @@
-#!/Users/shu/team_budget_planner/env/bin/python3.12
+#!/bin/sh
+'''exec' "/Users/shu/Library/Mobile Documents/com~apple~CloudDocs/team_budget_planner/env/bin/python3.12" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

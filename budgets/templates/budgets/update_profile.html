@@ -1,32 +1,32 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}
 
 {% block content %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">  <!-- Document language set to English -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Profile</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta charset="UTF-8">  <!-- Character encoding set to UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Responsive design for mobile compatibility -->
+    <title>Update Profile</title>  <!-- Title displayed in the browser tab -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Link to the external stylesheet for styling the page -->
 </head>
 <body>
     <header>
-        <h1>Update Profile</h1>
+        <h1>Update Profile</h1>  <!-- Main heading for the profile update section -->
     </header>
     <main>
-        <section class="profile-update-section">
-            <form method="post" enctype="multipart/form-data" class="profile-update-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    {{ form.non_field_errors }}
-                    {{ form.as_p }}
+        <section class="profile-update-section">  <!-- Section dedicated to profile update -->
+            <form method="post" enctype="multipart/form-data" class="profile-update-form">  <!-- Form to handle profile updates -->
+                {% csrf_token %}  <!-- CSRF token for security against cross-site request forgery -->
+                <div class="form-group">  <!-- Container for form fields -->
+                    {{ form.non_field_errors }}  <!-- Display non-field errors, if any -->
+                    {{ form.as_p }}  <!-- Render form fields as paragraphs -->
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary">Update</button>  <!-- Submit button to send the form data -->
             </form>
         </section>
     </main>
     <footer>
-        <p>&copy; {{ current_year }} </p>
+        <p>&copy; {{ current_year }} </p>  <!-- Footer displaying the current year -->
     </footer>
 </body>
 </html>

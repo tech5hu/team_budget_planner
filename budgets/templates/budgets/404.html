@@ -1,15 +1,18 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template to maintain consistent layout and styling -->
 
-{% load static %}
-<!DOCTYPE html>
+{% load static %}  <!-- Loading the static files tag library to access static assets -->
+<!DOCTYPE html>  <!-- Declaring the document type for HTML5 -->
 <html>
 <head>
-    <title>ERROR! Page Not Found</title>
-    <!-- Link to the static CSS file -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>ERROR! Page Not Found</title>  <!-- Title of the error page -->
+    <!-- Link to the static CSS file for styling -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Using the static template tag to link the CSS file -->
 </head>
 <body>
-    <h2>Page Not Found</h2>
-    <p>The page you are looking has not been found. Please double check the URL or simply return to the <a href="{% url 'dashboard' %}">dashboard</a>.</p>
+    <h2>Page Not Found</h2>  <!-- Main heading indicating the error type -->
+    <p>
+        The page you are looking for has not been found.  <!-- Message informing the user about the missing page -->
+        Please double check the URL or simply return to the <a href="{% url 'dashboard' %}">dashboard</a>.  <!-- Link to navigate back to the dashboard -->
+    </p>
 </body>
 </html>

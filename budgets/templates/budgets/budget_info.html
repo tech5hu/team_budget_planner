@@ -1,21 +1,21 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template for a consistent layout -->
 
 {% block content %}
-    <h2>Budget Information</h2>
+    <h2>Budget Information</h2>  <!-- Header for the budget information section -->
     
     <div>
-        <h3>Budget Name: {{ budget.name }}</h3>
-        <p><strong>Income:</strong> £{{ budget.income_amount }}</p>
-        <p><strong>Expenses:</strong> £{{ budget.expense_amount }}</p>
+        <h3>Budget Name: {{ budget.budget_name }}</h3>  <!-- Displaying the name of the budget -->
+        <p><strong>Income:</strong> £{{ budget.income_amount|floatformat:2 }}</p>  <!-- Displaying the income amount, formatted to two decimal places -->
+        <p><strong>Expenses:</strong> £{{ budget.expense_amount|floatformat:2 }}</p>  <!-- Displaying the expenses amount, formatted to two decimal places -->
+        <p><strong>Remaining:</strong> £{{ remaining_amount|floatformat:2 }}</p>  <!-- Displaying the remaining amount, formatted to two decimal places -->
     </div>
 
     <!-- Links to edit or delete the budget -->
     <div>
-        <a href="{% url 'budgets:budget_edit' budget.id %}" class="button">Edit Budget</a>
-        <a href="{% url 'budgets:budget_delete' budget.id %}" class="button" onclick="return confirm('Are you sure you want to delete this budget?');">Delete Budget</a>
+        <a href="{% url 'budgets:budget_edit' budget.id %}" class="button click-here-link">Edit Budget</a>  <!-- Link to edit the budget -->
+        <a href="{% url 'budgets:budget_delete' budget.id %}" class="button click-here-link" onclick="return confirm('Are you sure you want to delete this budget?');">Delete Budget</a>  <!-- Link to delete the budget with a confirmation prompt -->
     </div>
 
     <!-- Link back to the dashboard -->
-    <a href="{% url 'budgets:dashboard' %}" class="button">Back to Dashboard</a>
+    <a href="{% url 'budgets:dashboard' %}" class="button click-here-link">Back to Dashboard</a>  <!-- Link to return to the dashboard -->
 {% endblock %}
-

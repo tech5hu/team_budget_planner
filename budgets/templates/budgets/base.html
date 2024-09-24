@@ -1,0 +1,52 @@
+{% load static %}  <!-- Loading the static template tag to include static files -->
+<!DOCTYPE html>
+<html lang="en">  <!-- Setting the language attribute for the document -->
+<head>
+    <meta charset="UTF-8">  <!-- Defining the character set for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Responsive design settings -->
+    <title>Budget Planner</title>  <!-- Title of the page that appears in the browser tab -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Linking to the external CSS file for styling -->
+</head>
+<body>
+    {% if request.path != '/logout/' %}  <!-- Checking if the current path is not the logout page -->
+        <header>
+            <h1>Budget Planner</h1>  <!-- Main heading for the application -->
+            <nav>  <!-- Navigation bar for linking to different sections -->
+                <a href="{% url 'budgets:home' %}">Home</a>  <!-- Link to the home page -->
+                <a href="{% url 'budgets:dashboard' %}">Dashboard</a>  <!-- Link to the dashboard -->
+                <a href="{% url 'budgets:budgets_list' %}">Budgets</a>  <!-- Link to the budgets list -->
+                <a href="{% url 'budgets:transactions_list' %}">Transactions</a>  <!-- Link to the transactions list -->
+
+                <!-- Account Dropdown -->
+                <div class="navbar-right">
+                    <div class="account-dropdown">  <!-- Dropdown for account-related links -->
+                        <a href="#" class="account-link">Account</a>  <!-- Link that triggers the dropdown -->
+                        <div class="account-dropdown-content">  <!-- Content that appears when the dropdown is activated -->
+                            {% if user.is_authenticated %}  <!-- Checking if the user is logged in -->
+                                <a href="{% url 'budgets:profile' %}">Profile</a>  <!-- Link to user profile -->
+                                <a href="{% url 'budgets:settings' %}">Settings</a>  <!-- Link to account settings -->
+                                <a href="{% url 'budgets:logout' %}">Logout</a>  <!-- Link to log out -->
+                            {% else %}  <!-- If the user is not authenticated -->
+                                <a href="{% url 'login' %}">Login</a>  <!-- Link to the login page -->
+                                <a href="{% url 'budgets:register' %}">Register</a>  <!-- Link to the registration page -->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    {% endif %}
+
+    <div class="container">  <!-- Main container for the layout -->
+        <aside>
+            {% include 'budgets/sidebar.html' %}  <!-- Including the sidebar template -->
+        </aside>
+        <main>
+            {% block content %}  <!-- Placeholder for specific page content -->
+            {% endblock %}
+        </main>
+    </div>
+
+    <script src="{% static 'js/scripts.js' %}"></script>  <!-- Linking to the external JavaScript file -->
+</body>
+</html>

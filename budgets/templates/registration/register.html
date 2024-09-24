@@ -1,20 +1,20 @@
-{% extends 'budgets/index.html' %}
+{% extends 'budgets/base.html' %}  <!-- Extending the base template to maintain a consistent layout across the application -->
 
 {% block content %}
-    <h2>Register</h2>
+    <h2>Register</h2>  <!-- Heading for the registration page -->
 
     <!-- Display form errors if any -->
     {% if form.errors %}
-        <div class="errorlist">
-            <p>Please correct the following errors:</p>
+        <div class="errorlist">  <!-- Container for error messages -->
+            <p>Please correct the following errors:</p>  <!-- Instruction for the user to fix errors -->
             <ul>
                 {% for field in form %}
                     {% if field.errors %}
                         <li>
-                            {{ field.label_tag }}:
+                            {{ field.label_tag }}:  <!-- Display the field label -->
                             <ul>
                                 {% for error in field.errors %}
-                                    <li>{{ error }}</li>
+                                    <li>{{ error }}</li>  <!-- List each error for the field -->
                                 {% endfor %}
                             </ul>
                         </li>
@@ -24,24 +24,32 @@
         </div>
     {% endif %}
 
-    <form method="post">
-        {% csrf_token %}
+    <form method="post">  <!-- Starting the registration form -->
+        {% csrf_token %}  <!-- CSRF token for security -->
         <div class="form-group">
-            {{ form.username.label_tag }}
-            {{ form.username }}
+            {{ form.username.label_tag }}  <!-- Display the label for the username field -->
+            {{ form.username }}  <!-- Render the username input field -->
         </div>
         <div class="form-group">
-            {{ form.email.label_tag }}
-            {{ form.email }}
+            {{ form.email.label_tag }}  <!-- Display the label for the email field -->
+            {{ form.email }}  <!-- Render the email input field -->
         </div>
         <div class="form-group">
-            {{ form.password1.label_tag }}
-            {{ form.password1 }}
+            {{ form.password1.label_tag }}  <!-- Display the label for the first password field -->
+            {{ form.password1 }}  <!-- Render the first password input field -->
         </div>
         <div class="form-group">
-            {{ form.password2.label_tag }}
-            {{ form.password2 }}
+            {{ form.password2.label_tag }}  <!-- Display the label for the password confirmation field -->
+            {{ form.password2 }}  <!-- Render the password confirmation input field -->
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <div class="form-group">
+            {{ form.role.label_tag }}  <!-- Display the label for the role field -->
+            {{ form.role }}  <!-- Render the role selection field -->
+        </div>
+        <div class="form-group">
+            {{ form.account_level.label_tag }}  <!-- Display the label for the account level field -->
+            {{ form.account_level }}  <!-- Render the account level selection field -->
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>  <!-- Submit button to register -->
     </form>
 {% endblock %}
