@@ -38,19 +38,16 @@ class Command(BaseCommand):
         ]
         communication_preferences = ['Email', 'Phone', 'Slack']
 
-        # Create ExpenseCategory records (if they don't already exist)
+        # Create ExpenseCategory records
         for category_name in expense_categories:
             ExpenseCategory.objects.get_or_create(name=category_name)
 
-        # Retrieve the expense categories
-        expense_category_instances = list(ExpenseCategory.objects.all())
-
         # Create or get groups for managers and developers
-        manager_group, created = Group.objects.get_or_create(name='Managers')
-        developer_group, created = Group.objects.get_or_create(name='Developers')
+        manager_group, _ = Group.objects.get_or_create(name='Managers')
+        developer_group, _ = Group.objects.get_or_create(name='Developers')
 
-        # Create admin user if not already exists
-        admin_user, created = User.objects.get_or_create(
+        # Create admin user
+        admin_user, _ = User.objects.get_or_create(
             username='admin',
             defaults={
                 'email': 'admin@example.com',
@@ -72,10 +69,10 @@ class Command(BaseCommand):
 
         # User data for additional users
         user_data = [
-            ('man_alice', 'alice@example.com', True),   # True for is_manager
+            ('man_alice', 'alice@example.com', True),
             ('man_bob', 'bob@example.com', True),
             ('man_charlie', 'charlie@example.com', True),
-            ('dev_david', 'david@example.com', False),  # False for is_manager
+            ('dev_david', 'david@example.com', False),
             ('dev_eve', 'eve@example.com', False),
             ('dev_frank', 'frank@example.com', False),
             ('dev_grace', 'grace@example.com', False),
@@ -86,7 +83,7 @@ class Command(BaseCommand):
 
         users = []
         for username, email, is_manager in user_data:
-            user, created = User.objects.get_or_create(
+            user, _ = User.objects.get_or_create(
                 username=username,
                 defaults={
                     'email': email,
@@ -95,14 +92,14 @@ class Command(BaseCommand):
             )
 
             # Manually create UserProfile without signal interference
-            user_profile, created = UserProfile.objects.get_or_create(
+            user_profile, _ = UserProfile.objects.get_or_create(
                 user=user,
                 defaults={
                     'email': email,
                     'username': username,
                     'password': make_password('password'),  # Store hashed password
-                    'role': 'admin' if is_manager else 'developer',  # Set role based on is_manager
-                    'is_manager': is_manager,  # Set is_manager field
+                    'role': 'admin' if is_manager else 'developer',
+                    'is_manager': is_manager,
                 }
             )
 
@@ -114,7 +111,7 @@ class Command(BaseCommand):
 
             users.append(user_profile)
 
-        # Create 10 BudgetAndCategory records and assign user profiles
+        # Create BudgetAndCategory records
         budget_names = [
             'Monthly Cloud Service Subscription',
             'Annual Software License Fees', 
@@ -129,26 +126,26 @@ class Command(BaseCommand):
         ]
         
         for name in budget_names:
-            income_amount = round(random.uniform(500.00, 1000.00), 2)  # Generate a random income amount
-            expense_amount = round(random.uniform(100.00, income_amount - 1), 2)  # Ensure expense is less than income
+            income_amount = round(random.uniform(500.00, 1000.00), 2)
+            expense_amount = round(random.uniform(100.00, income_amount - 1), 2)
             BudgetAndCategory.objects.create(
                 budget_name=name,
                 income_amount=income_amount,
                 expense_amount=expense_amount,
-                expense_category=random.choice(expense_category_instances),
+                expense_category=random.choice(ExpenseCategory.objects.all()),
                 payment_method=random.choice(payment_methods),
-                user_profile=random.choice(users),  # Assign a random user profile to the budget
+                user_profile=random.choice(users),
             )
 
-        # Create TeamAndSetting records manually
+        # Create TeamAndSetting records
         for user_profile in users:
             TeamAndSetting.objects.get_or_create(
-                team_name='Default Team',  # Changed to a default name
+                team_name='Default Team',
                 user=user_profile.user,
-                currency='GBP',  # Always GBP
+                currency='GBP',
                 communication_preference=random.choice(communication_preferences),
                 role=user_profile.role,
-                work_phone=f"+1-{random.randint(1000, 9999)}-{random.randint(100, 999)}-{random.randint(1000, 9999)}",  # Random work phone number
+                work_phone=f"+1-{random.randint(1000, 9999)}-{random.randint(100, 999)}-{random.randint(1000, 9999)}",
             )
         
         # Create Transaction records
@@ -156,8 +153,8 @@ class Command(BaseCommand):
         transaction_types = ['income', 'expense']
 
         for _ in range(10):
-            expense_category = random.choice(expense_category_instances)
-            transaction_date = make_aware(datetime.now() - timedelta(days=random.randint(1, 30)))  # Random transaction date within the last 30 days
+            expense_category = random.choice(ExpenseCategory.objects.all())
+            transaction_date = make_aware(datetime.now() - timedelta(days=random.randint(1, 30)))
             payment_method = random.choice(payment_methods)
             transaction_type = random.choice(transaction_types)
             user_profile = random.choice(users)
@@ -165,10 +162,10 @@ class Command(BaseCommand):
 
             # Generate amount based on transaction type
             if transaction_type == 'income':
-                amount = round(random.uniform(100.00, float(budget.income_amount)), 2)  # Random income amount
+                amount = round(random.uniform(100.00, float(budget.income_amount)), 2)
                 description = f"Received an income of £{amount} from project A."
             else:
-                amount = round(random.uniform(100.00, float(budget.expense_amount)), 2)  # Random expense amount
+                amount = round(random.uniform(100.00, float(budget.expense_amount)), 2)
                 description = f"Paid £{amount} for {expense_category.name}: {self.generate_transaction_description(expense_category.name)}"
 
             Transaction.objects.create(
@@ -189,7 +186,6 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Data populated successfully'))
 
     def generate_transaction_description(self, category):
-        # Generate a description based on the expense category
         descriptions = {
             'Cloud Services': "Monthly cloud storage subscription.",
             'Software Licenses': "Renewed software licenses for the team.",
@@ -203,4 +199,3 @@ class Command(BaseCommand):
             'Database Licensing': "Renewed database licenses."
         }
         return descriptions.get(category, "General transaction for unspecified category.")
-
