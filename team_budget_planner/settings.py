@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-secret-key')  # Se
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 't')  # Enable or disable debug mode
 
 # Define allowed hosts for the application
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1', 'budgets.herokuapp.com').split(',')  # Hosts that can serve the application
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,budgets.herokuapp.com').split(',')  # Hosts that can serve the application
 
 # List of installed applications for the Django project
 INSTALLED_APPS = [
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 # Middleware components for processing requests and responses
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',  # Security middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files handling
     'django.contrib.sessions.middleware.SessionMiddleware',  # Session management
     'django.middleware.common.CommonMiddleware',  # Common functionalities
     'django.middleware.csrf.CsrfViewMiddleware',  # CSRF protection
@@ -42,7 +43,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',  # Messaging support
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Clickjacking protection
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug toolbar middleware
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Static files handling
+    
 ]
 
 # URL configuration for the project
@@ -78,13 +79,13 @@ INTERNAL_IPS = [
 # WSGI application configuration for deployment
 WSGI_APPLICATION = 'team_budget_planner.wsgi.application'
 
-# Database configuration for SQLite
+# Database configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Database engine
-        'NAME': BASE_DIR / 'db.sqlite3',  # Database file path
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),  # Use DATABASE_URL environment variable for Heroku
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 # Password validation settings
