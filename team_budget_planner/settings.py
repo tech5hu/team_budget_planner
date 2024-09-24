@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-secret-key')  # Se
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 't')  # Enable or disable debug mode
 
 # Define allowed hosts for the application
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,budgets.herokuapp.com').split(',')  # Hosts that can serve the application
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,teambudgetplanner-fd1be9ca9c90.herokuapp.com').split(',')  # Hosts that can serve the application
 
 # List of installed applications for the Django project
 INSTALLED_APPS = [
