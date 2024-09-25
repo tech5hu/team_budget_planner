@@ -168,8 +168,7 @@ def budget_delete_view(request, budget_id):
 
         if request.method == 'POST':
             budget.delete()
-            messages.success(request, 'Budget deleted successfully.')
-            return redirect('budgets:budget_list')
+            return redirect('budgets:budgets_list')
 
         return render(request, 'budgets/delete_budget_confirmation.html', {'budget': budget})
 
@@ -251,7 +250,6 @@ def transaction_delete_view(request, transaction_id):
 
         if request.method == 'POST':
             transaction.delete()
-            messages.success(request, 'Transaction deleted successfully.')
             return redirect('budgets:transactions_list')
         
         return render(request, 'budgets/delete_transaction_confirmation.html', {'transaction': transaction})
