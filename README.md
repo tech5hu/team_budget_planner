@@ -136,7 +136,7 @@ Once the server is running, open your web browser and navigate to:
 
 http://127.0.0.1:8000  ----> web application
 
-http://127.0.0.1:8000  -----> django admin site (for database management)
+http://127.0.0.1:8000/admin/  -----> django admin site (for database management)
 
 You can now log in or register as a new user and start using the app!
 
