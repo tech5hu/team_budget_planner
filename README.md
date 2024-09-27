@@ -1,118 +1,125 @@
 # Team Budget Planner Web Application
-
 ## Overview
-
 This web application helps teams manage and track budgets and transactions with user roles and permissions. It supports different account levels and roles, allowing Managers to have admin access and Developers to be regular users. The system keeps track of teams, budgets, transactions, and expense categories. Admin users have the ability to fully manage budgets and transactions, while regular users can only create, view, and update relevant data.
 
-## Installation
+# Installation
+## Local Installation - Install the following on your machine:
+### Prerequisites
+- **Python 3.x**
+   Python is a programming language used to build the application. Follow the instructions here to download and install Python for your device: (https://www.python.org/downloads/)
 
-### Local Installation - To run the web application locally, follow these steps:
+    After installation, verify that it was successful by running the following command in your terminal or command prompt:
 
-#### Prerequisites - Install the following on your machine:
-
-- **Python 3.x**  
-   Python is a programming language used to build the application. Follow the instructions here to download and install Python for your device: (https://www.python.org/downloads/)  
-   After installation, verify that it was successful by running the following command in your terminal or command prompt:  
-
-   python --version
+     python3 --version
 
 This command will display the installed Python version.
+        
 
-- **Git** 
-Git is a version control system that allows you to track changes in your code and collaborate with others. Follow the instructions here to install Git for your device: (https://git-scm.com/downloads)
+- **Git**
+   Git is a version control system that allows you to track changes in your code and collaborate with others. Follow the instructions here to install Git for your device: (https://git-scm.com/downloads)
 
-After installation, verify that it was successful by running:
+    After installation, verify that it was successful by running:
 
-git --version
+     git --version
 
-- **Virtualenv** 
-Virtualenv is a tool that helps manage dependencies for different projects. It creates isolated environments for your Python projects, preventing conflicts between package versions. You can install Virtualenv using pip (Python’s package manager):
-
-pip install virtualenv
 
 - **PostgreSQL**
-PostgreSQL is a powerful relational database system used to store the application’s data. Follow the instructions here to install PostgreSQL for your device: (https://www.postgresql.org/download/)
+   PostgreSQL is a powerful relational database system used to store the application’s data. Follow the instructions here to install PostgreSQL for your device: (https://www.postgresql.org/download/)
 
-After installation, verify that it was successful by running:
+   if you have Homebrew installed you can run (can take up to 10 mins)
 
-psql --version
+     brew install postgresql@15
 
-To set up the database, start PostgreSQL and create a user and database by running the following commands in your terminal:
+   After installation, verify that it was successful by running:
+     
+     psql --version
 
-sudo -u postgres psql
+**Installation Steps**
 
-Then, within the PostgreSQL shell, run these commands:
+**Clone the repository**
+  This step downloads the application code from GitHub to your local machine. Run the following commands in your terminal:
 
-# Create a new database user by running:
-# Replace your_db_user with your desired username and your_password with a desired password.
+    git clone https://github.com/tech5hu/team_budget_planner
+     
+    cd team_budget_planner
 
-CREATE USER your_db_user WITH PASSWORD 'your_password';   
 
-# Create a new database to be used in your application and set the previously created user as the owner:
-# Replace your_db_name with your desired database name.
+**Create and activate a virtual environment**
+  This isolates your project dependencies. Run the following commands:
 
-CREATE DATABASE your_db_name OWNER your_db_user;
+   python3 -m venv env
 
-# Once user and database created quit PostgreSQL by running: 
+   source env/bin/activate  # On Windows: env\Scripts\activate
 
-\q
+**Install the dependencies**
+  This step installs all the necessary packages required for the application to run (can take up to 10 mins). Run:
 
-Update the .env File to use these:
-Open your .env file in the project root and update the DATABASE_URL variable with your database connection details in the following format:
+   pip install -r requirements.txt
 
-DATABASE_URL=postgres://your_db_user:your_password@localhost:5432/your_db_name
+**Set up the database using PostgreSQL**
+  Ensure you have downloaded PostgreSQL as instructed above:
 
-Finally apply Database Migrations:
-Run the following command in your terminal to apply the database migrations and set up the initial database schema to be used in the app:
+  To set up the database, start PostgreSQL and create a user and database by running the following commands in your terminal:
 
-python manage.py migrate
+        psql postgres
 
---------------
+  Then, within the PostgreSQL shell, run these commands:
 
-**Heroku CLI** (for deploying or managing the Heroku app)
-Heroku CLI is a command-line interface for managing applications hosted on Heroku, a cloud platform. Follow the instructions here to install the Heroku CLI for your device: (https://devcenter.heroku.com/articles/heroku-cli)
+   -- Important: Before executing the commands below, please make sure to replace your_db_user, your_password, and your_db_name with your own desired values. Failure to do so may result in unintended database and user creation. 
 
-After installation, verify that it was successful by running:
+   -- *Example: Creating a user*
+      *CREATE USER team_user WITH PASSWORD 'secure_password123';*
 
-heroku --version
+   -- Create a new database to be used in your application and set the previously created user as the owner, replace your_db_name with your desired database name.
 
-**App Installation Steps**
-Clone the repository: This step downloads the application code from GitHub to your local machine. Run the following commands in your terminal:
+      
+      CREATE DATABASE team_budget OWNER team_user;
 
-git clone https://github.com/your-repo/team-budget-planner.git
-cd team-budget-planner
+   -- For reference:
+         
+         CREATE USER your_db_user WITH PASSWORD 'your_password';
+         
+         CREATE DATABASE your_db_name OWNER your_db_user;
 
-**Create and activate a virtual environment** :
-This isolates your project dependencies. Run the following commands:
 
-python -m venv env
-source env/bin/activate  # On Windows: env\Scripts\activate
+   **If you accidentally created a database or user and wish to remove them, follow these steps:**
+         
+         DROP DATABASE your_db_name;
 
-**Install the dependencies:** 
-This step installs all the necessary packages required for the application to run. Run:
+         DROP USER your_db_user;
 
-pip install -r requirements.txt
 
-**Create a .env file in the project root with the following variables:**
-The .env file is used to store sensitive information like your secret key and database connection details. Create a new file named .env in the project folder and add the following :
+  Once user and database created quit PostgreSQL by running: 
 
-SECRET_KEY=your-secret-key
-DEBUG=True
-DATABASE_URL=your-database-url
+       \q
 
-You can generate a SECRET_KEY using the following command:
 
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 
-**Set up the database using PostgreSQL:**
-Ensure you have created a PostgreSQL database and user in the previous steps. Update your .env file with the database connection details. Then run the following command to apply the database migrations:
+**Update the .env file**
+ Create a .env file in the project root with the following variables:
+ 
+     SECRET_KEY=your-secret-key
+     DEBUG=True
+     DATABASE_URL=postgres://your_db_user:your_password@localhost:5432/your_db_name
 
-python manage.py migrate
+   (You can generate a SECRET_KEY using the following command:)
+
+
+     python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+
+
+**Apply Database Migrations**
+ Finally apply Database Migrations:
+
+   Run the following command in your terminal to apply the database migrations and set up the initial database schema to be used in the app:
+
+     python3 manage.py migrate
+ 
 
 **Run the development server:**
 This command starts a local server that allows you to view the application in your web browser:
 
-python manage.py runserver
+python3 manage.py runserver
 
 **Access the app:**
 Once the server is running, open your web browser and navigate to:
@@ -121,14 +128,24 @@ http://127.0.0.1:8000
 
 You can now log in or register as a new user and start using the app!
 
+**Admin Credentials**
+
+     Username: 'admin'
+     Password '123'
 
 
-**HOSTED VERSION (Heroku)**
+**HOSTED LIVE VERSION (Heroku)**
 You can access the live version of the application hosted on Heroku here: 
+
+      https://teambudgetplanner-fd1be9ca9c90.herokuapp.com/
+
 
 Open the Heroku URL: Navigate to the live application using the link provided above.
 
 Register an account: If you are a new user, follow the registration process. If you already have an account, log in using your credentials.
+
+
+**App Navigation Key**
 
 User Roles: Depending on your role (Manager or Developer):
 
