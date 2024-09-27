@@ -10,6 +10,7 @@ This web application helps teams manage and track budgets and transactions with 
 
     After installation, verify that it was successful by running the following command in your terminal or command prompt:
 
+     ```bash
      python3 --version
 
 This command will display the installed Python version.
@@ -20,6 +21,7 @@ This command will display the installed Python version.
 
     After installation, verify that it was successful by running:
 
+     ```bash
      git --version
 
 
@@ -28,10 +30,12 @@ This command will display the installed Python version.
 
    if you have Homebrew installed you can run (can take up to 10 mins)
 
+     ```bash
      brew install postgresql@15
 
    After installation, verify that it was successful by running:
      
+     ```bash
      psql --version
 
 **Installation Steps**
@@ -39,21 +43,25 @@ This command will display the installed Python version.
 **Clone the repository**
   This step downloads the application code from GitHub to your local machine. Run the following commands in your terminal:
 
+   ```bash
     git clone https://github.com/tech5hu/team_budget_planner
-     
+    
     cd team_budget_planner
 
 
 **Create and activate a virtual environment**
   This isolates your project dependencies. Run the following commands:
 
+   ```bash
    python3 -m venv env
 
+   ```bash
    source env/bin/activate  # On Windows: env\Scripts\activate
 
 **Install the dependencies**
   This step installs all the necessary packages required for the application to run (can take up to 10 mins). Run:
 
+   ```bash
    pip install -r requirements.txt
 
 **Set up the database using PostgreSQL**
@@ -61,6 +69,7 @@ This command will display the installed Python version.
 
   To set up the database, start PostgreSQL and create a user and database by running the following commands in your terminal:
 
+        ```bash
         psql postgres
 
   Then, within the PostgreSQL shell, run these commands:
@@ -76,35 +85,36 @@ This command will display the installed Python version.
       CREATE DATABASE team_budget OWNER team_user;
 
    -- For reference:
-         
+         ```bash
          CREATE USER your_db_user WITH PASSWORD 'your_password';
-         
+         ```bash
          CREATE DATABASE your_db_name OWNER your_db_user;
 
 
    **If you accidentally created a database or user and wish to remove them, follow these steps:**
-         
+         ```bash
          DROP DATABASE your_db_name;
-
+         ```bash
          DROP USER your_db_user;
 
 
   Once user and database created quit PostgreSQL by running: 
 
+      ```bash
        \q
 
 
 
 **Update the .env file**
  Create a .env file in the project root with the following variables:
- 
+     ```bash
      SECRET_KEY=your-secret-key
      DEBUG=True
      DATABASE_URL=postgres://your_db_user:your_password@localhost:5432/your_db_name
 
    (You can generate a SECRET_KEY using the following command:)
 
-
+     ```bash
      python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 
 
@@ -112,19 +122,21 @@ This command will display the installed Python version.
  Finally apply Database Migrations:
 
    Run the following command in your terminal to apply the database migrations and set up the initial database schema to be used in the app:
-
+     ```bash
      python3 manage.py migrate
  
 
 **Run the development server:**
 This command starts a local server that allows you to view the application in your web browser:
-
+```bash
 python3 manage.py runserver
 
 **Access the app:**
 Once the server is running, open your web browser and navigate to:
 
-http://127.0.0.1:8000
+http://127.0.0.1:8000  ----> web application
+
+http://127.0.0.1:8000  -----> django admin site (for database management)
 
 You can now log in or register as a new user and start using the app!
 
