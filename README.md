@@ -10,7 +10,7 @@ This web application helps teams manage and track budgets and transactions with 
 
     After installation, verify that it was successful by running the following command in your terminal or command prompt:
 
-     ```bash
+     
      python3 --version
 
 This command will display the installed Python version.
