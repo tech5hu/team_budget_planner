@@ -77,12 +77,12 @@ This command will display the installed Python version.
    -- Important: Before executing the commands below, please make sure to replace your_db_user, your_password, and your_db_name with your own desired values. Failure to do so may result in unintended database and user creation. 
 
    -- *Example: Creating a user*
-      *CREATE USER team_user WITH PASSWORD 'secure_password123';*
+   -- *Example: *CREATE USER team_user WITH PASSWORD 'secure_password123';*
 
    -- Create a new database to be used in your application and set the previously created user as the owner, replace your_db_name with your desired database name.
 
-      
-      CREATE DATABASE team_budget OWNER team_user;
+      -- *Example: Creating a database*
+      -- *Example: CREATE DATABASE team_budget OWNER team_user;*
 
    -- For reference:
          
