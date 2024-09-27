@@ -44,7 +44,7 @@ This command will display the installed Python version.
   This step downloads the application code from GitHub to your local machine. Run the following commands in your terminal:
 
    
-    git clone https://github.com/tech5hu/team_budget_planner
+    git clone https://github.com/tech5hu/team_budget_planner.git
     
     cd team_budget_planner
 
